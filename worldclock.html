@@ -1,0 +1,53 @@
+
+<!DOCTYPE html>
+<html style="height:100%; margin:0; padding:0">
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+		<title>Timothy's World Clock</title>
+		<style type="text/css">
+			html {
+				background: #343434;
+				font-family: "Helvetica", cursive, sans-serif;
+				font-weight: bold;
+				color: #FFFFFF;
+			}
+		</style>
+	</head>
+	
+	<body style="display:flex; height:100%; margin:0; padding:0; justify-content:center; align-items:center;">
+		<span id="clocktext" style="font-kerning:none"></span>
+		
+		<script type="text/javascript">
+			"use strict";
+			
+			var textElem = document.getElementById("clocktext");
+			var targetWidth = 0.9;
+			var curFontSize = 20;
+			
+			function clockFunction() {
+				var d = new Date();
+				var s = "";
+				s += ((d.getHours() + 11) % 12 + 1) + ":";
+				if(10 > d.getMinutes()) s += "0" + d.getMinutes() + ":";
+				if(10 < d.getMinutes()) s += "" + d.getMinutes() + ":";
+				if(10 > d.getSeconds()) s += "0" + (d.getSeconds() + "\u00A0");
+				if(10 < d.getSeconds()) s += "" + (d.getSeconds() + "\u00A0");
+				if(d.getHours() >= 12) s += "pm";
+				if(d.getHours() < 12) s += "am";
+				textElem.textContent = s;
+				setTimeout(clockFunction, 1000 - d.getTime() % 1000 + 20);
+			}
+
+			function textSize() {
+				for (var i = 0; 3 > i; i++) {
+					curFontSize *= targetWidth / (textElem.offsetWidth / textElem.parentNode.offsetWidth);
+					textElem.style.fontSize = curFontSize + "pt";
+				}
+			}
+
+			clockFunction();
+			textSize();
+			window.addEventListener("resize", textSize);
+		</script>
+	</body>
+</html>
